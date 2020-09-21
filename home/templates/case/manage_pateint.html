@@ -1,0 +1,106 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}Manage Patient{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.css" />
+
+{% endblock css %}
+{% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Patient Details</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Picture</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>User Name</th>
+              <th>Age</th>
+              <th>Email ID</th>
+              <th>Mobile</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Picture</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>User Name</th>
+              <th>Age</th>
+              <th>Email ID</th>
+              <th>Mobile</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for patient in patients %}
+            <tr>
+              <td><img class="img-profile rounded-circle" width="32" height="32" src="{% static "img/logo.png" %}"></td>
+              <td>{{ patient.first_name }}</td>
+              <td>{{ patient.last_name }}</td>
+              <td>{{ patient.username }}</td>
+              <td>{{ patient.profile.age }}</td>
+              <td>{{ patient.email }}</td>
+              <td>{{ patient.profile.contact_no }}</td>
+              <td>
+                <a class="btn btn-datatable btn-icon btn-transparent-dark" role="button" href="/generate/{{ patient.profile.user.id }}"><i class="fa fa-medkit"></i></a>
+                <button class="btn btn-datatable btn-icon btn-transparent-dark" id="dropdownMenuLink" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                  <div class="dropdown-header">Action:</div>
+                  <a class="dropdown-item" href="/edit_patient/{{ patient.profile.user.id }}"><i class="fa fa-edit"></i> Edit</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-trash-alt"></i> Delete</a>
+                  <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#"><i class="fa fa-user-md"></i> Advice</a>
+                </div>
+            </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-12">
+        <table class="display" id="manage_patient">
+          <thead>
+            <tr>
+              <th>Sr.No</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Last Login</th>
+              <th>Date Joined</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+  </div> -->
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  var dt = new Date();
+  document.getElementById("datetime").innerHTML = (("0" + dt.getDate()).slice(-2)) + "." + (("0" + (dt.getMonth() + 1)).slice(-2)) + "." + (dt.getFullYear()) + " " + (("0" + dt.getHours()).slice(-2)) + ":" + (("0" + dt.getMinutes()).slice(-2));
+</script>
+<!-- Page level plugins -->
+<script src="{% static "vendor/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "vendor/datatables/dataTables.bootstrap4.min.js" %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static "js/demo/datatables-demo.js" %}"></script>
+{% endblock script %}

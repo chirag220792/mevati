@@ -1,0 +1,108 @@
+{% extends 'home/base.html' %}
+{% block title %}Generate Case{% endblock %}
+{% block heading %}Generate Case{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <form class="col s12" action='/do_generate/' method="POST">
+      {%csrf_token%}
+      <div class="row">
+        <div class="input-field col s12">
+          <!--<select name="patient" id="patient" class="validate" required>
+          {% for patient in patients %}
+          <option value='{{patient.username}}'>{{patient.username}}</option>
+          {% endfor %}
+        </select>-->
+          <input type="text" id="autocomplete-patient" class="autocomplete-patient" name="patient">
+          <label for="autocomplete-patient">Patient</label>
+        </div>
+        <div class="collapsible-header">
+          <span>C/O.</span>
+          <i class="material-icons caret right">keyboard_arrow_right</i>
+        </div>
+        <div class="body">
+          <div class="row">
+            <div class="input-field col s4">
+              <input name="co1" id="co1" class="materialize-textarea" required>
+              <label for="co1">C/o.1</label>
+            </div>
+            <div class="input-field col s4">
+              <input name="co2" id="co2" class="materialize-textarea" required>
+              <label for="co2">C/o.2</label>
+            </div>
+            <div class="input-field col s4">
+              <input name="co3" id="co3" class="materialize-textarea" required>
+              <label for="co3">C/o.3</label>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-header">
+          <span>O/E.</span>
+          <i class="material-icons caret right">keyboard_arrow_right</i>
+        </div>
+        <div class="body">
+          <div class="row">
+            <div class="input-field col s4"><i>&#8451; F</i>
+              <input name="temperature" id="temperature" class="materialize-textarea" required>
+              <label for="temperature">Temperature</label>
+            </div>
+            <div class="input-field col s4"><i>/minute</i>
+              <input name="pulse" id="pulse" class="materialize-textarea" required>
+              <label for="pulse">Pulse</label>
+            </div>
+            <div class="input-field col s4"><i>mmHg</i>
+              <input name="bloodpressure" id="bloodpressure" class="materialize-textarea" required>
+              <label for="bloodpressure">Blood Pressure</label>
+            </div>
+            <div class="input-field col s6"><i>min</i>
+              <input name="rr" id="rr" class="materialize-textarea" required>
+              <label for="rr">RR</label>
+            </div>
+            <div class="input-field col s6"><i>%</i>
+              <input name="spo2" id="spo2" class="materialize-textarea" required>
+              <label for="spo2">SPo2</label>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-header">
+          <span>S/E</span>
+          <i class="material-icons caret right">keyboard_arrow_right</i>
+        </div>
+        <div class="body">
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="rs" type="text" class="validate">
+              <label for="rs">RS</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="cvs" type="text" class="validate">
+              <label for="cvs">CVS</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="cns" type="text" class="validate">
+              <label for="cns">CNS</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="pa" type="text" class="validate">
+              <label for="pa">P/A</label>
+            </div>
+          </div>
+        </div>
+        <div class="input-field col s12">
+          <textarea name="perabdomen" id="perabdomen" class="materialize-textarea" required></textarea>
+          <label for="perabdomen">Per Abdomen</label>
+        </div>
+        <div class="input-field col s12">
+          <textarea name="description" id="description" class="materialize-textarea" required></textarea>
+          <label for="description">Description</label>
+        </div>
+
+        <button type="submit" class="btn">Generate</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% if patients %}<div id="patient-data" hidden>{% for patient in patients %}"{{patient.username}}":null, {% endfor %}
+</div>{% endif %}
+{% endblock %}

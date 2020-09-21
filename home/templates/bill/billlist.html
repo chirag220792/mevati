@@ -1,0 +1,71 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}User List{% endblock %}
+{% block heading %}
+
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.css" />
+{% endblock css %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Pyament History</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Amount</th>
+                <th>Visited Date</th>
+                <th>Paid Date</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Amount</th>
+                <th>Visited Date</th>
+                <th>Paid Date</th>
+                <th>Payment Status</th>
+              </tr>
+            </tfoot>
+            <tbody>
+                
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.patient.first_name }}</td>
+                    <td>{{ bill.patient.contact_no }}</td>
+                    <td>{{ bill.amount }}</td>
+                    <td>{{ bill.bill_date }}</td>
+                    <td>{{ bill.paid_date }}</td>
+                    <td>{{ bill.is_paid }}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- Page level plugins -->
+<script src="{% static "vendor/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "vendor/datatables/dataTables.bootstrap4.min.js" %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static "js/demo/datatables-demo.js" %}"></script>
+{% endblock script %}

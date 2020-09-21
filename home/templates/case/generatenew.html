@@ -1,0 +1,303 @@
+{% extends 'home/base.html' %}
+{% block title %}Generate Case{% endblock %}
+{% block heading %}Generate Case{% endblock %}
+
+{% block body %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="row">
+            <div class="col">
+              <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+            </div>
+            <div class="col">
+              <p class="text-right">Date/Time: <span id="datetime"></span></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3 input-group mb-4">
+              <input class="form-control autocomplete" id="autocomplete-patient" type="text" name="patient"
+                placeholder="Enter Patient Name">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-white px-4 border-md border-left-0">
+                  <i class="fa fa-search text-muted"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-lg-2 input-group mb-4">
+              <input class="form-control" id="patientdob" type="text" name="patientdob"
+                placeholder="Date of Birth" readonly>
+            </div>
+
+            <div class="col-lg-1 input-group mb-4">
+              <input class="form-control" id="patientage" type="text" name="patientage"
+                placeholder="Age" readonly>
+            </div>
+
+            <div class="col-lg-2 input-group mb-4">
+              <input class="form-control" id="patientgender" type="text" name="patientgender"
+                placeholder="Gender" readonly>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-6">
+
+              <!-- Collapsable Past history -->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardExample3" class="d-block card-header py-3 bg-primary text-white"
+                  data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
+                  <h6 class="m-0 font-weight-bold">Past history</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardExample3">
+                  <div class="card-body">
+                    No data found
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6">
+
+              <!-- Collapsable Past complaints -->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardExample4" class="d-block card-header py-3 bg-info text-white"
+                  data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample4">
+                  <h6 class="m-0 font-weight-bold">Past complaints</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardExample4">
+                  <div class="card-body">
+                    Date: 2020-08-26
+                    Complaints :
+                    Vomiting
+                    Breathing trouble
+                    Interpretation :
+                    trachea contraction
+                    Medications :
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-12">
+
+              <!-- Complaints Card Example -->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Complaints</h6>
+                  <div class="no-arrow">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#complaintsModal">
+                      <i class="fas fa-plus-square"></i>
+                    </button>
+                  </div>
+
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="complaintsModal" tabindex="-1" aria-labelledby="complaintsModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="complaintsModalLabel">Patient Complaints</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="container-fluid">
+                            <div class="row">
+                              <div class="col-md-4">Add Complaints:</div>
+                              <div class="col-md-6" id="textfield">
+                                <div class="input-group mb-4" id="text_div0"><!-- textfield here we append our dynamic fields -->
+                                  <input class="form-control autocomplete" id="text0" type="text" name="complaints" placeholder="Complaints">
+                                  <div class="input-group-prepend">
+                                    <button onclick="addtextfield()" name="text0" class="input-group-text bg-primary px-4 border-md border-left-0">
+                                      <i class="fa fa-plus text-muted"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                            <div class="row">
+                              <div class="col-md-4">Interpretations:</div>
+                              <div class="col-md-6 input-group mb-4">
+                                <input class="form-control autocomplete" id="autocomplete-interpretations" type="text"
+                                  name="interpretations" placeholder="Interpretations">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text bg-white px-4 border-md border-left-0">
+                                    <i class="fa fa-plus"></i>
+                                  </span>
+                                </div>
+                              </div>
+
+                            </div>
+                            <h5>Medicines form</h5>
+                            <hr>
+                            <div class="row">
+                              <div class="col-md-6 input-group mb-4">
+                                <input class="form-control autocomplete" id="autocomplete-medicines" type="text"
+                                  name="medicines" placeholder="Medicine Name">
+                              </div>
+                              <div class="col-md-6 input-group mb-4">
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                  <option>Before Food</option>
+                                  <option>After Food</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6 input-group mb-4">
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                  <option>Number of Days</option>
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                              </div>
+                              <div class="col-md-6 input-group mb-4">
+                                <input class="form-control autocomplete" id="autocomplete-medicines" type="text"
+                                  name="medicines" placeholder="Addnitional Notes">
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6 input-group mb-4">
+                                <input class="form-control autocomplete" id="autocomplete-medicines" type="number"
+                                  name="medicines" placeholder="Quantity">
+                              </div>
+                              <div class="col-md-6 input-group mb-4">
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group row">
+                                <div class="col-md-12">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                      value="option1">
+                                    <label class="form-check-label" for="inlineCheckbox1">Morning</label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                      value="option2">
+                                    <label class="form-check-label" for="inlineCheckbox2">AfterNoon</label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                                      value="option3">
+                                    <label class="form-check-label" for="inlineCheckbox3">Night</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  Click
+                  icon,<i class="fas fa-plus-square"></i> to add a complaint
+                </div>
+              </div>
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-12">
+
+              <!-- Complaints Card Example -->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">History</h6>
+                  <div class="no-arrow">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#historyModal">
+                      <i class="fas fa-plus-square"></i>
+                    </button>
+                    <!-- Button trigger modal -->
+
+                  </div>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="historyModalLabel">Add Patient History</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Family History</option>
+                                <option>Personal History</option>
+                                <option>Past History</option>
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Subject">
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Description">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  Click
+                  icon,<i class="fas fa-plus-square"></i> to add a complaint
+                </div>
+              </div>
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+          </div>
+          <!-- End of Main Content -->
+{% if patients %}<div id="patient-data" hidden>{% for patient in patients %}"{{patient.username}}":null, {% endfor %}
+</div>{% endif %}
+{% endblock %}

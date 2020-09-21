@@ -1,0 +1,722 @@
+{% extends 'home/base.html' %}
+{% block title %}Generate Case{% endblock %}
+{% block heading %}
+<!-- Page Heading -->
+<div class="row">
+  <div class="col">
+    <h1 class="h3 mb-4 text-gray-800">Genrate Case</h1>
+  </div>
+  <div class="col">
+    <p class="text-right">Date/Time: <span id="datetime"></span></p>
+  </div>
+</div>
+<hr>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<script type="text/Javascript">
+    function getpatientdob()
+    {
+      displaypatientdob = document.querySelector("#selectpatient")
+      ans = displaypatientdob.options[displaypatientdob.selectedIndex].value;
+      document.querySelector("#patientdob").textContent=ans;
+    }
+    
+  </script>
+{% endblock css %}
+
+{% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-4 input-group mb-4">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white px-4 border-md border-right-0">
+          Patient Name
+        </span>
+      </div>
+      <b class="form-control" id="patientusername" type="text" name="patientusername">{{ patient.user.username }}</b>
+      <input type="hidden" name="patient_id" id="patient_id" value="{{ patient.user.id }}">
+    </div>
+    <div class="col-lg-4 input-group mb-4">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white px-4 border-md border-right-0">
+          Date of Birth.<i class="fas fa-birthday-cake"></i>
+        </span>
+      </div>
+      <b class="form-control" id="patientdob" type="text" name="patientdob" placeholder="Date of Birth"
+        readonly>{{ patient.dob }}</b>
+    </div>
+
+    <div class="col-lg-2 input-group mb-4">
+      <label class="form-control">Age</label>
+      <input class="form-control" id="patientage" type="text" name="patientage" value="{{ patient.age }}" readonly>
+    </div>
+
+    <div class="col-lg-2 input-group mb-4">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white px-4 border-md border-right-0">
+          <i class="fas fa-venus-mars"></i>
+        </span>
+      </div>
+      <input class="form-control" id="patientgender" type="text" name="patientgender" placeholder="{{ patient.sex }}"
+        readonly>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 input-group mb-4">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white px-4 border-md border-right-0">
+          Mobile Number
+        </span>
+      </div>
+      <b class="form-control" id="patientmobile" type="text" name="patientmobile" placeholder="Contact Number"
+        readonly>{{ patient.contact_no }}</b>
+    </div>
+    <div class="col-lg-4 input-group mb-4">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white px-4 border-md border-right-0">
+          Email
+        </span>
+      </div>
+      <b class="form-control" id="patientemail" type="text" name="patientemail" placeholder="Email"
+        readonly>{{ patient.user.email }}</b>
+    </div>
+  </div>
+  <hr>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+
+      <!-- Complaints Card Example -->
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Complaints</h6>
+          <div class="no-arrow">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#complaintsModal">
+              <i class="fas fa-plus-square"></i>
+            </button>
+          </div>
+
+
+          <!-- Modal -->
+          <div class="modal fade" id="complaintsModal" tabindex="-1" aria-labelledby="complaintsModalLabel"
+            aria-hidden="true">
+            <form action="/patientcheckup_save/" method="POST">
+              {% csrf_token %}
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="complaintsModalLabel">Patient Complaints</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-lg-3 input-group mb-3">
+                          <div class="input-group">
+                            <input type="hidden" name="patient_id" id="patient_id" value="{{ patient.user.id }}">
+                            <input type="text" class="form-control" maxlength="3" name="patient_weghit" id="patient_weghit"
+                              placeholder="Weghit">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" disabled type="button">
+                                <i>Kg</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 input-group mb-3">
+                          <div class="input-group">
+                            <input type="text" class="form-control" maxlength="3" name="patient_height" id="patient_height"
+                              placeholder="Height">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" disabled type="button">
+                                <i>cm</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        {% if patient.sex == "Female" %}
+                        <div class="col-lg-5 input-group mb-3">
+                          <div class="input-group">
+                            <input type="date" class="form-control" placeholder="LMP Date" name="patient_lmpdate"
+                              id="patient_lmpdate">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>LMP Date</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-3">Add Complaints: 1</div>
+                        <div class="col-md-4" id="textfield">
+                          <div class="input-group mb-4" id="text_div0">
+                            <!-- textfield here we append our dynamic fields -->
+                            <!--<input class="form-control autocomplete" id="text0" type="text" name="complaints" placeholder="Complaints">
+                                  <div class="input-group-prepend">
+                                    <button onclick="addtextfield()" name="text0" class="input-group-text bg-primary px-4 border-md border-left-0">
+                                      <i class="fa fa-plus text-muted"></i>
+                                    </button>
+                                  </div>-->
+                            <input type="text" list="complaintlist" Placeholder="Search Complaint.."
+                              class="form-control" style="width:300px;" id="patient_complaint1"
+                              name="patient_complaint1">
+                            <datalist id="complaintlist">
+                              {% for results in results %}
+                              <option value="{{ results.complaintname}}">
+                                {% endfor %}
+                            </datalist>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control" id="since" type="text" name="since" placeholder="since" readonly>
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control" id="sincetime1" type="text" name="sincetime1"
+                            placeholder="Since Time">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3">Add Complaints: 2</div>
+                        <div class="col-md-4" id="textfield">
+                          <div class="input-group mb-4" id="text_div0">
+                            <input type="text" list="complaintlist" Placeholder="Search Complaint.."
+                              class="form-control" style="width:300px;" name="patient_complaint2"
+                              id="patient_complaint2">
+                            <datalist id="complaintlist">
+                              {% for results in results %}
+                              <option value="{{ results.complaintname}}">
+                                {% endfor %}
+                            </datalist>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control" id="since" type="text" name="since" placeholder="since" readonly>
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control" id="sincetime2" type="text" name="sincetime2"
+                            placeholder="Since Time">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3">Add Complaints: 3</div>
+                        <div class="col-md-4" id="textfield">
+                          <div class="input-group mb-4" id="text_div0">
+                            <input type="text" list="complaintlist" Placeholder="Search Complaint.."
+                              class="form-control" style="width:300px;" id="patient_complaint3"
+                              name="patient_complaint3">
+                            <datalist id="complaintlist">
+                              {% for results in results %}
+                              <option value="{{ results.complaintname}}">
+                                {% endfor %}
+                            </datalist>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control" id="since" type="text" name="since" placeholder="since" readonly>
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control" id="sincetime3" type="text" name="sincetime3"
+                            placeholder="Since Time">
+                        </div>
+                      </div>
+                      <h5>On Examination:</h5>
+                      <hr>
+                      <div class="row">
+                        <div class="col-md-3">Gerenal Condition:</div>
+                        <div class="col-md-3 input-group mb-3">
+                          <select id="patient_gerenalcondition" name="patient_gerenalcondition" class="form-control"
+                            id="exampleFormControlSelect1">
+                            <option>Good</option>
+                            <option>Bad</option>
+                            <option>Moderate</option>
+                          </select>
+                        </div>
+                        <div class="col-lg-3 input-group mb-3">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Temperature"
+                              name="patient_temperature" id="patient_temperature" maxlength="5">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i class="fas fa-thermometer fa-sm"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 input-group mb-3">
+                          <div class="input-group">
+                            <input type="number" class="form-control" maxlength="3" placeholder="Pluse" name="patient_pulse"
+                              id="patient_pulse">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i class="fas fa-heartbeat fa-sm"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-5 input-group mb-4">
+                          <div class="input-group">
+                            <input type="number" class="form-control" maxlength="3" placeholder="Systolic Pressure"
+                              name="patient_systolicpressure" id="patient_pluse"><span class="input-group-text"
+                              pattern="[0-9]{3}">&#47;</span>
+                            <input type="number" class="form-control" maxlength="3" placeholder="Dystolic Pressure"
+                              name="patient_dystolicpressure" id="patient_dystolicpressure" pattern="[0-9]{3}">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>MMHg</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 input-group mb-4">
+                          <div class="input-group">
+                            <input type="number" class="form-control" maxlength="3" placeholder="Respiratory Rate"
+                              name="patient_respiratoryrate" id="patient_respiratoryrate">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>minute</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 input-group mb-4">
+                          <div class="input-group">
+                            <input type="number" class="form-control" placeholder="SpO2" maxlength="3" name="patient_spo2"
+                              id="patient_spo2">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i class="fas fa-percentage fa-sm"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col mb-3">
+                          <div class="form-group">
+                            <label for="patient_checkupremark">Checkup Remark</label>
+                            <textarea class="form-control" id="patient_checkupremark" name="patient_checkupremark"
+                              rows="1"></textarea>
+                          </div>
+                        </div>
+                      </div>
+
+                      <h5>Systematic Examination:</h5>
+                      <hr>
+                      <div class="row">
+                        <div class="col-lg-4 input-group mb-4">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Respiratory System"
+                              list="respiratorylist" id="patient_respiratorysystem" name="patient_respiratorysystem">
+                            <div class="input-group-append">
+                              <datalist id="respiratorylist">
+                                <option value="AEAB Clear">AEAB Clear</option>
+                                <option value="Rhoncw">Rhoncw</option>
+                                <option value="Wheezing">Wheezing</option>
+                                <option value="Stridor">Stridor</option>
+                                <option value="Crepts">Crepts</option>
+                              </datalist>
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>RS</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4 input-group mb-4">
+                          <div class="input-group">
+                            <input type="text" list="cardiovascularlist" class="form-control"
+                              placeholder="Cardiovascular System" id="patient_cardiovascularsystem"
+                              name="patient_cardiovascularsystem">
+                            <div class="input-group-append">
+                              <datalist id="cardiovascularlist">
+                                <option value="S1S2">S1S2</option>
+                                <option value="Normal">Normal</option>
+                              </datalist>
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>CVS</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 input-group mb-4">
+                          <div class="input-group">
+                            <input type="text" list="centralnervouslist" class="form-control"
+                              placeholder="Central Nervous System" name="patient_centralnervoussystem"
+                              id="patient_centralnervoussystem">
+                            <div class="input-group-append">
+                              <datalist id="centralnervouslist">
+                                <option value="Conscious">Conscious</option>
+                                <option value="SemiConscious">SemiConscious</option>
+                                <option value="UnConscious">UnConscious</option>
+                              </datalist>
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>CNS</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <h5>Per Abdomen:</h5>
+                      <hr>
+                      <div class="row">
+                        <div class="col-lg-3 input-group mb-3">
+                          <select class="form-control" id="patient_palpitation1" name="patient_palpitation1">
+                            <option>Soft</option>
+                            <option>Hard</option>
+                          </select>
+                        </div>
+                        <div class="col-lg-3 input-group mb-3">
+                          <select class="form-control" id="patient_palpitation2" name="patient_palpitation2">
+                            <option>Tender</option>
+                            <option>Non Tender</option>
+                          </select>
+                        </div>
+                        <div class="col-lg-5 input-group mb-3">
+                          <div class="input-group">
+                            <!-- Multiselect dropdown -->
+                            <select multiple class="selectpicker" id="selectpicker">
+                              <option value=" Right Hypochondrium region "> Right Hypochondrium region </option>
+                              <option value=" Epigastric region "> Epigastric region </option>
+                              <option value=" Left Hypochondrium region "> Left Hypochondrium region </option>
+                              <option value=" Right Lumbar region "> Right Lumbar region </option>
+                              <option value=" Umbilical region "> Umbilical region </option>
+                              <option value=" Left Lumbar region "> Left Lumbar region </option>
+                              <option value=" Right iliac region "> Right iliac region </option>
+                              <option value=" Hypogastrium region ">Hypogastrium region</option>
+                              <option value=" Left iliac region "> Left iliac region </option>
+                              <option value=" All "> All </option>
+                            </select><!-- End -->
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" type="button" disabled>
+                                <i>PA</i>
+                              </button>
+                              <input type="hidden" id="patient_palpitation3" name="patient_palpitation3" readonly
+                                name="palist" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <h5>Provisional Diagnosis:</h5>
+                      <hr>
+                      <div class="row">
+                        <div class="col-lg-4 input-group mb-4">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Diagnosis 1"
+                              id="patient_provisionaldiagnosis" name="patient_provisionaldiagnosis">
+                          </div>
+                        </div>
+                      </div>
+
+                      <h5>Medicines form</h5>
+                      <hr>
+                      <div class="row">
+                        <div class="col-md-3 input-group mb-4">
+                          <input class="form-control autocomplete" id="patient_medicines" type="text"
+                            name="patient_medicines" placeholder="Medicine Name" list="medicineslist">
+                          <datalist id="medicineslist">
+                            {% for medicinesname in medicinesnames %}
+                            <option value="{{ medicinesname }}">{{ medicinesname }}</option>
+                            {% endfor %}
+                          </datalist>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinestime" name="patient_medicinestime">
+                            <option>1-1-1</option>
+                            <option>1-1-0</option>
+                            <option>1-0-0</option>
+                            <option>0-1-0</option>
+                            <option>0-0-1</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicineswhen" name="patient_medicineswhen">
+                            <option>After Food</option>
+                            <option>Before Food</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinesdays" name="patient_medicinesdays">
+                            <option>Number of Days</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 input-group mb-4">
+                          <input class="form-control autocomplete" id="patient_medicinesremark" type="text"
+                            name="patient_medicinesremark" placeholder="Addnitional Notes">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="sumbit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- Collapsable Past complaints -->
+          <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#collapseCardExample4" class="d-block card-header py-3 bg-info text-white" data-toggle="collapse"
+              role="button" aria-expanded="true" aria-controls="collapseCardExample4">
+              <h6 class="m-0 font-weight-bold">Past complaints</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="collapseCardExample4">
+              <div class="card-body">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Patient Number of complaints</th>
+                      <th>Provisional Diagnosis</th>
+                      <th>complaint1</th>
+                      <th>Date</th>
+                      <th>Payment Staus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for patientcomplaint in patientcomplaints %}
+                    <tr>
+                      <td></td>
+                      <td>{{ patientcomplaint.patientcheckup.provisionaldiagnosis }}</td>
+                      <td>{{ patientcomplaint.complaint1 }}</td>
+                      <td>{{ patientcomplaint.patientcheckup.filed_date }}</td>
+                      
+                      {% for patientbill in patientbills %}
+                        
+                      {% if patientbill.is_paid == False %}
+                      <td>
+                        <button href="#" class="btn btn-danger btn-icon-split" data-toggle="modal"
+                        data-target="#billModal">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-rupee-sign"></i>
+                        </span>
+                        <span class="text">Unpaid</span>
+                      </button>
+                      <!--Bill Modal -->
+                      <div class="modal fade" id="billModal" tabindex="-1" aria-labelledby="billModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="billModalLabel">Payment</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="/bill_save/" method="POST">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                <input type="text" name="patientbill_id" id="patientbill_id"
+                                value="{{ patientbill.id }}">
+                                <input type="hidden" name="patient_id" id="patient_id"
+                                value="{{ patient.user.id }}">
+                                <input type="hidden" name="patientcheckup_id" id="patientcheckup_id"
+                                value="{{ patientcomplaint.id }}">
+                                <input type="text" disabled class="form-control" placeholder="Visited Date"
+                                value="{{ patient.user.first_name }} {{ patient.user.last_name }}">
+                              </div>
+                              <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Amount" id="amount"
+                                name="amount">
+                              </div>
+                            </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                        </div>
+                      </td>
+                      {% else %}
+                      <td>
+                        <button disabled href="#" class="btn btn-success btn-icon-split">
+                          <span class="icon text-white-50">
+                            <i class="fas fa-rupee-sign"></i>
+                          </span>
+                          <span class="text">Paid</span>
+                        </button>
+                      </td>
+                      {% endif %}
+                      {% endfor %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+
+      <!-- Complaints Card Example -->
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">History</h6>
+          <div class="no-arrow">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#historyModal">
+              <i class="fas fa-plus-square"></i>
+            </button>
+            <!-- Button trigger modal -->
+
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="historyModalLabel">Add Patient History</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="/history/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <select class="form-control" id="HistoryType" name="HistoryType">
+                        <option value="Family History">Family History</option>
+                        <option value="Personal History">Personal History</option>
+                        <option value="Past History">Past History</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <input type="hidden" name="patient_id" id="patient_id" value="{{ patient.user.id }}">
+                      <input type="text" class="form-control" placeholder="Subject" id="subject" name="subject">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Description" id="description"
+                        name="description">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- Collapsable Past history -->
+          <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#collapseCardExample3" class="d-block card-header py-3 bg-primary text-white"
+              data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
+              <h6 class="m-0 font-weight-bold">Past history</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="collapseCardExample3">
+              <div class="card-body">
+
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>subject</th>
+                      <th>Description</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for patientPastHistory in patientPastHistorys %}
+                    <tr>
+                      <td>{{ patientPastHistory.subject }}</td>
+                      <td>{{ patientPastHistory.description }}</td>
+                      <td>{{ patientPastHistory.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  var dt = new Date();
+  document.getElementById("datetime").innerHTML = (("0" + dt.getDate()).slice(-2)) + "." + (("0" + (dt.getMonth() + 1)).slice(-2)) + "." + (dt.getFullYear()) + " " + (("0" + dt.getHours()).slice(-2)) + ":" + (("0" + dt.getMinutes()).slice(-2));
+</script>
+<script type="text/javascript">
+  var textfield_no = 1;
+  function addtextfield() {
+    var html = '<div class="input-group mb-4" id="text_div' + textfield_no + '">';
+    html += '<input type="text" name="text' + textfield_no + '" class="form-control autocomplete text' + textfield_no + '" placeholder="Complaints">';
+    html += '<div class="input-group-prepend"><button type="button" name="button' + textfield_no + '" onclick="minustextfield(' + textfield_no + ')" class="input-group-text bg-danger px-4 border-md border-left-0"><i class="fa fa-minus"></i></button>';
+    html += '</div></div>';
+    $('#textfield').append(html);
+    textfield_no++;
+  }
+
+  function minustextfield(text_no) {
+    $('#text_div' + text_no).remove();
+    textfield_no--;
+  }
+</script>
+<script>
+  $(function () {
+    $('.selectpicker').selectpicker({
+      placeholder: 'Select PA list..',
+      closeOnSelect: false
+    });
+    $('#selectpicker').on('change', function () {
+      var palist = $("#selectpicker option:selected").text();
+      $('#patient_palpitation3').val(palist);
+    });
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+{% endblock script %}

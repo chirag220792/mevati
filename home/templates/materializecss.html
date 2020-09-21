@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        header,
+        main,
+        footer {
+            padding-left: 300px;
+        }
+
+        @media only screen and (max-width : 992px) {
+
+            header,
+            main,
+            footer {
+                padding-left: 0;
+            }
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+          }
+        
+          main {
+            flex: 1 0 auto;
+          }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <nav class="navbar indigo darken-4">
+                <div>
+                    
+                    <a href="#!" class="brand-logo">Home</a>
+                    
+                    <ul class="right hide-on-med-and-down">
+                        <li class="active"><a href="collapsible.html">Logout</a></li>
+                        <li class="hide-on-med-and-down"><a href="/products/admin">Buy Now!</a></li>
+                        <li class="hide-on-med-and-down"><a href="#!" data-target="dropdown1" class="dropdown-trigger waves-effect"><i class="material-icons">notifications</i></a></li>
+                        <li><a href="#!" data-target="chat-dropdown" class="dropdown-trigger waves-effect"><i class="material-icons">settings</i></a></li>
+                    </ul><!--------- sidenav Trigger ------->
+                    <a href="#" data-target="slide-out" class="sidenav-trigger left show-on-large"></a>
+                </div>
+            </nav>
+        </div>
+        <!--------- sidenav content ------->
+      <ul id="slide-out" class="sidenav sidenav-fixed">
+        <li><div class="user-view">
+          <div class="background">
+            <img src="background.jpg">
+          </div>
+          <a href="#user"><img class="circle" src="yuna.jpg"></a>
+          <a href="#name"><span class="white-text name">John Doe</span></a>
+          <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+        </div></li>
+        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+        <li><a href="#!">Second Link</a></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+      </ul>
+    </header>
+    <!-------------------- Content part started ------------------->
+<!--------------- Add all content here ------------------------>
+    <main>
+        <div>
+
+            <div class="row">
+                <div class="col s12 m4">
+                    <span class="settings-title">Personal Information</span>
+                    <p>Lo-fi you probably haven't heard of them etsy leggings raclette kickstarter four dollar toast.
+                        Raw denim fingerstache food truck chia health goth synth. Forage man bun intelligentsia freegan
+                        PBR&B banh mi asymmetrical chambray. </p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="page-footer indigo darken-3">
+        <div>
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
+                        content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div>
+                © 2020 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Initialization script -->
+    <script src="//cdn.shopify.com/s/files/1/1775/8583/t/1/assets/dashboard.min.js?v=481680883062710906"></script>
+
+    <script>
+        // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+        // with jQuery
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+        });
+    </script>
+</body>
+
+</html>
