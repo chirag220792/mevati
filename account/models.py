@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Profile(models.Model):
+    #title = models.CharField(max_length=3)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    contact_no = models.IntegerField()
+    contact_no = models.IntegerField(null = True, blank=True, default=0)
     address = models.CharField(max_length=200)
     sex = models.CharField(max_length=50)
     dob = models.DateField(null = True, blank=True,)

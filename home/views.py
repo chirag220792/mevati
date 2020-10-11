@@ -15,8 +15,12 @@ from django.utils import timezone
 # Create your views here.
 @login_required()
 def home(request):
+    patient_count = User.objects.filter(groups__name='patient').count()
+    total_collection = Bill.objects.filter(is_paid='True').count()
+    pending = Bill.objects.filter(is_paid='False').count()
+    patientcheckup = PatientCheckUp.objects.all().count()
     messages.add_message(request, messages.INFO, 'Welcome to The Clinic Portal.')
-    return render(request, 'home/base.html')
+    return render(request, 'home/dashboard.html', {"patient_count":patient_count, "total_collection":total_collection,"pending":pending,"patientcheckup":patientcheckup,})
 
 
 # Create your views here.
@@ -40,15 +44,6 @@ def register(request):
 @login_required
 def doRegister(request):
     if hasGroup(request.user, 'receptionist'):
-        """ username = request.POST.get('username')
-        if User.objects.filter(username=username).exists():
-            messages.add_message(request, messages.ERROR, 'Username Already Exists.')
-            return HttpResponseRedirect('/register')
-        password = request.POST.get('password1')
-        cpassword = request.POST.get('password2')
-        if not password == cpassword:
-            messages.add_message(request, messages.ERROR, 'Passwords not matching.')
-            return HttpResponseRedirect('/register') """
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = first_name+'.'+last_name
@@ -56,26 +51,29 @@ def doRegister(request):
             messages.add_message(request, messages.ERROR, 'Username Already Exists.')
             return HttpResponseRedirect('/register')
         contact_no = request.POST.get('contact_no')
-        if not contact_no.isdigit():
-            messages.add_message(request, messages.ERROR, 'Wrong Contact no.')
-            return HttpResponseRedirect('/register')
         address = request.POST.get('address')
         dob = request.POST.get('dob')
         age = request.POST.get('age')
         blood_group = request.POST.get('blood_group')
         sex_choices = request.POST.get('sex_choices')
         email = request.POST.get('email')
-        patient = User.objects.create_user(username=username, password='123', first_name=first_name, last_name=last_name, email=email)
-        patient.profile = Profile(contact_no=int(contact_no), address=address, dob=dob, age = age, blood_group=blood_group, sex=sex_choices)
-        patient.profile.save()
-        patient.save()
+        if not contact_no.isdigit():
+            contact_no = 0
+        try:
+            patient = User.objects.create_user(username=username, password='123', first_name=first_name, last_name=last_name, email=email)
+            patient.profile = Profile(contact_no=int(contact_no), address=address, dob=dob, age = age, blood_group=blood_group, sex=sex_choices)
+            patient.profile.save()
+            patient.save()
 
-        group = Group.objects.get(name='patient')
-        group.user_set.add(patient)
-        group.save()
+            group = Group.objects.get(name='patient')
+            group.user_set.add(patient)
+            group.save()
 
-        messages.add_message(request, messages.WARNING, 'Successfully Registered '+username)
-        return HttpResponseRedirect('/manage_patient')
+            messages.add_message(request, messages.SUCCESS, 'Successfully Registered '+username)
+            return HttpResponseRedirect('/manage_patient')
+        except:
+            messages.add_message(request, messages.WARNING, 'Registered Failed '+username)
+            return HttpResponseRedirect('/manage_patient')
     else:
         messages.add_message(request, messages.WARNING, 'Access Denied.')
         return HttpResponseRedirect('/home')
@@ -200,9 +198,10 @@ def patientcheckup_save(request):
         patient_palpitation2 = request.POST.get('patient_palpitation2')
         patient_palpitation3 = request.POST.get('patient_palpitation3')
         patient_provisionaldiagnosis = request.POST.get('patient_provisionaldiagnosis')
+        patient_followup = request.POST.get('patient_followup')
         created_at = datetime.now()
         #insert into table
-        patientcheckup = PatientCheckUp(patient=patient, doctor=request.user, lmpdob = patient_lmpdate, weight = patient_weghit, height = patient_height, generalcondition = patient_gerenalcondition, temperature = patient_temperature, pulse = patient_pulse, systolicpressure = patient_systolicpressure, dystolicpressure = patient_dystolicpressure, respiratoryrate =patient_respiratoryrate, spo2 = patient_spo2,checkupremake = patient_checkupremark, respiratorysystem = patient_respiratorysystem, cardiovascularsystem = patient_cardiovascularsystem, centralnervoussystem = patient_centralnervoussystem, palpitation1 = patient_palpitation1, palpitation2 = patient_palpitation2, palpitation3 = patient_palpitation3, provisionaldiagnosis = patient_provisionaldiagnosis, filed_date = created_at)
+        patientcheckup = PatientCheckUp(patient=patient, doctor=request.user, lmpdob = patient_lmpdate, weight = patient_weghit, height = patient_height, generalcondition = patient_gerenalcondition, temperature = patient_temperature, pulse = patient_pulse, systolicpressure = patient_systolicpressure, dystolicpressure = patient_dystolicpressure, respiratoryrate =patient_respiratoryrate, spo2 = patient_spo2,checkupremake = patient_checkupremark, respiratorysystem = patient_respiratorysystem, cardiovascularsystem = patient_cardiovascularsystem, centralnervoussystem = patient_centralnervoussystem, palpitation1 = patient_palpitation1, palpitation2 = patient_palpitation2, palpitation3 = patient_palpitation3, provisionaldiagnosis = patient_provisionaldiagnosis, followup = patient_followup, filed_date = created_at)
         patientcheckup.save()
 
         #Change PatientComplaint DataBase Table
@@ -217,19 +216,32 @@ def patientcheckup_save(request):
         patientcomplaint.save()
 
         #Change PrescriptionMedicine DataBase Table
-        patient_medicinesname = request.POST.get('patient_medicines')
-        patient_medicinestime = request.POST.get('patient_medicinestime')
-        patient_medicineswhen = request.POST.get('patient_medicineswhen')
-        patient_medicinesnumberofdays = request.POST.get('patient_medicinesdays')
+        patient_medicinesname1 = request.POST.get('patient_medicines1')
+        patient_medicinestime1 = request.POST.get('patient_medicinestime1')
+        patient_medicineswhen1 = request.POST.get('patient_medicineswhen1')
+        patient_medicinesnumberofdays1 = request.POST.get('patient_medicinesdays1')
+        patient_medicinesname2 = request.POST.get('patient_medicines2')
+        patient_medicinestime2 = request.POST.get('patient_medicinestime2')
+        patient_medicineswhen2 = request.POST.get('patient_medicineswhen2')
+        patient_medicinesnumberofdays2 = request.POST.get('patient_medicinesdays2')
+        patient_medicinesname3 = request.POST.get('patient_medicines3')
+        patient_medicinestime3 = request.POST.get('patient_medicinestime3')
+        patient_medicineswhen3 = request.POST.get('patient_medicineswhen3')
+        patient_medicinesnumberofdays3 = request.POST.get('patient_medicinesdays3')
+        patient_medicinesname4 = request.POST.get('patient_medicines4')
+        patient_medicinestime4 = request.POST.get('patient_medicinestime4')
+        patient_medicineswhen4 = request.POST.get('patient_medicineswhen4')
+        patient_medicinesnumberofdays4 = request.POST.get('patient_medicinesdays4')
         patient_medicinesspecialinstruction = request.POST.get('patient_medicinesremark')
         created_at = datetime.now()
 
         #insert into table PrescriptionMedicine
-        prescriptionedicine = PrescriptionMedicine(patientcheckup = patientcheckup, doctor=request.user, name = patient_medicinesname, time = patient_medicinestime, when = patient_medicineswhen, numberofdays = patient_medicinesnumberofdays, specialinstruction = patient_medicinesspecialinstruction, created_at= created_at)
+        prescriptionedicine = PrescriptionMedicine(patientcheckup = patientcheckup, doctor=request.user, name1 = patient_medicinesname1, time1 = patient_medicinestime1, when1 = patient_medicineswhen1, numberofdays1 = patient_medicinesnumberofdays1, name2 = patient_medicinesname2, time2 = patient_medicinestime2, when2 = patient_medicineswhen2, numberofdays2 = patient_medicinesnumberofdays2, name3 = patient_medicinesname3, time3 = patient_medicinestime3, when3 = patient_medicineswhen3, numberofdays3 = patient_medicinesnumberofdays3, name4 = patient_medicinesname4, time4 = patient_medicinestime4, when4 = patient_medicineswhen4, numberofdays4 = patient_medicinesnumberofdays4, specialinstruction = patient_medicinesspecialinstruction, created_at= created_at)
         prescriptionedicine.save()
 
         #insert into table Bill
-        bill = Bill(patientcomplaint = patientcomplaint, patient = patient, doctor = request.user, amount=0, paid_date = created_at)
+        amount = request.POST.get('patient_amount')
+        bill = Bill(patientcomplaint = patientcomplaint, patient = patient, doctor = request.user, amount=amount, paid_date = created_at)
         bill.save()
 
         messages.add_message(request, messages.INFO, 'Successfully Generated Case')

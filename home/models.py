@@ -44,6 +44,7 @@ class PatientCheckUp(models.Model):
 	palpitation2 = models.CharField(max_length = 20, blank=True, null = True)
 	palpitation3 = models.TextField()
 	provisionaldiagnosis = models.CharField(max_length = 20, blank=True, null = True)
+	followup = models.CharField(max_length=200, blank = True, null = True)
 	filed_date=models.DateTimeField(auto_now= True)
 
 	def __str__(self):
@@ -70,15 +71,27 @@ class Medicines(models.Model):
 class PrescriptionMedicine(models.Model):
 	patientcheckup = models.ForeignKey(PatientCheckUp, on_delete=models.CASCADE)
 	doctor = models.ForeignKey(User, on_delete=models.CASCADE)
-	name = models.CharField(max_length=200)
-	time = models.CharField(max_length=10)
-	when = models.CharField(max_length=10)
-	numberofdays = models.IntegerField()
+	name1 = models.CharField(max_length=200)
+	time1 = models.CharField(max_length=10)
+	when1 = models.CharField(max_length=10)
+	numberofdays1 = models.IntegerField()
+	name2 = models.CharField(max_length=200)
+	time2 = models.CharField(max_length=10)
+	when2 = models.CharField(max_length=10)
+	numberofdays2 = models.IntegerField()
+	name3 = models.CharField(max_length=200)
+	time3 = models.CharField(max_length=10)
+	when3 = models.CharField(max_length=10)
+	numberofdays3 = models.IntegerField()
+	name4 = models.CharField(max_length=200)
+	time4 = models.CharField(max_length=10)
+	when4 = models.CharField(max_length=10)
+	numberofdays4 = models.IntegerField()
 	specialinstruction = models.CharField(max_length=200)
 	created_at=models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return self.name
+		return self.name1
 
 class Bill(models.Model):
 	patientcomplaint = models.ForeignKey(PatientComplaint, on_delete=models.CASCADE, related_name='bill_patientcomplaint')

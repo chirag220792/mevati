@@ -255,7 +255,7 @@
                         </div>
                         <div class="col-lg-3 input-group mb-3">
                           <div class="input-group">
-                            <input type="number" class="form-control" maxlength="3" placeholder="Pluse" name="patient_pulse"
+                            <input type="text" class="form-control" maxlength="3" placeholder="Pluse" name="patient_pulse"
                               id="patient_pulse">
                             <div class="input-group-append">
                               <button class="btn btn-primary" type="button" disabled>
@@ -269,10 +269,10 @@
                       <div class="row">
                         <div class="col-lg-5 input-group mb-4">
                           <div class="input-group">
-                            <input type="number" class="form-control" maxlength="3" placeholder="Systolic Pressure"
+                            <input type="text" class="form-control" maxlength="3" placeholder="Systolic Pressure"
                               name="patient_systolicpressure" id="patient_pluse"><span class="input-group-text"
                               pattern="[0-9]{3}">&#47;</span>
-                            <input type="number" class="form-control" maxlength="3" placeholder="Dystolic Pressure"
+                            <input type="text" class="form-control" maxlength="3" placeholder="Dystolic Pressure"
                               name="patient_dystolicpressure" id="patient_dystolicpressure" pattern="[0-9]{3}">
                             <div class="input-group-append">
                               <button class="btn btn-primary" type="button" disabled>
@@ -283,7 +283,7 @@
                         </div>
                         <div class="col-lg-4 input-group mb-4">
                           <div class="input-group">
-                            <input type="number" class="form-control" maxlength="3" placeholder="Respiratory Rate"
+                            <input type="text" class="form-control" maxlength="3" placeholder="Respiratory Rate"
                               name="patient_respiratoryrate" id="patient_respiratoryrate">
                             <div class="input-group-append">
                               <button class="btn btn-primary" type="button" disabled>
@@ -294,7 +294,7 @@
                         </div>
                         <div class="col-lg-3 input-group mb-4">
                           <div class="input-group">
-                            <input type="number" class="form-control" placeholder="SpO2" maxlength="3" name="patient_spo2"
+                            <input type="text" class="form-control" placeholder="SpO2" maxlength="3" name="patient_spo2"
                               id="patient_spo2">
                             <div class="input-group-append">
                               <button class="btn btn-primary" type="button" disabled>
@@ -343,8 +343,8 @@
                               name="patient_cardiovascularsystem">
                             <div class="input-group-append">
                               <datalist id="cardiovascularlist">
-                                <option value="S1S2">S1S2</option>
-                                <option value="Normal">Normal</option>
+                                <option value="S1S2">S1S2Normal</option>
+                                
                               </datalist>
                               <button class="btn btn-primary" type="button" disabled>
                                 <i>CVS</i>
@@ -381,8 +381,8 @@
                         </div>
                         <div class="col-lg-3 input-group mb-3">
                           <select class="form-control" id="patient_palpitation2" name="patient_palpitation2">
-                            <option>Tender</option>
                             <option>Non Tender</option>
+                            <option>Tender</option>
                           </select>
                         </div>
                         <div class="col-lg-5 input-group mb-3">
@@ -420,14 +420,18 @@
                               id="patient_provisionaldiagnosis" name="patient_provisionaldiagnosis">
                           </div>
                         </div>
+                        <div class="col-md-6 input-group mb-4">
+                          <input class="form-control autocomplete" id="patient_followup" type="text"
+                            name="patient_followup" placeholder="Follow up">
+                        </div>
                       </div>
 
                       <h5>Medicines form</h5>
                       <hr>
                       <div class="row">
                         <div class="col-md-3 input-group mb-4">
-                          <input class="form-control autocomplete" id="patient_medicines" type="text"
-                            name="patient_medicines" placeholder="Medicine Name" list="medicineslist">
+                          <input class="form-control autocomplete" id="patient_medicines1" type="text"
+                            name="patient_medicines1" placeholder="Medicine Name" list="medicineslist">
                           <datalist id="medicineslist">
                             {% for medicinesname in medicinesnames %}
                             <option value="{{ medicinesname }}">{{ medicinesname }}</option>
@@ -435,22 +439,23 @@
                           </datalist>
                         </div>
                         <div class="col-md-3 input-group mb-4">
-                          <select class="form-control" id="patient_medicinestime" name="patient_medicinestime">
+                          <select class="form-control" id="patient_medicinestime1" name="patient_medicinestime1">
                             <option>1-1-1</option>
                             <option>1-1-0</option>
+                            <option>1-0-1</option>
                             <option>1-0-0</option>
                             <option>0-1-0</option>
                             <option>0-0-1</option>
                           </select>
                         </div>
                         <div class="col-md-3 input-group mb-4">
-                          <select class="form-control" id="patient_medicineswhen" name="patient_medicineswhen">
+                          <select class="form-control" id="patient_medicineswhen1" name="patient_medicineswhen1">
                             <option>After Food</option>
                             <option>Before Food</option>
                           </select>
                         </div>
                         <div class="col-md-3 input-group mb-4">
-                          <select class="form-control" id="patient_medicinesdays" name="patient_medicinesdays">
+                          <select class="form-control" id="patient_medicinesdays1" name="patient_medicinesdays1">
                             <option>Number of Days</option>
                             <option>1</option>
                             <option>2</option>
@@ -460,11 +465,127 @@
                           </select>
                         </div>
                       </div>
-
+                      
+                      <div class="row">
+                        <div class="col-md-3 input-group mb-4">
+                          <input class="form-control autocomplete" id="patient_medicines2" type="text"
+                            name="patient_medicines2" placeholder="Medicine Name" list="medicineslist">
+                          <datalist id="medicineslist">
+                            {% for medicinesname in medicinesnames %}
+                            <option value="{{ medicinesname }}">{{ medicinesname }}</option>
+                            {% endfor %}
+                          </datalist>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinestime2" name="patient_medicinestime2">
+                            <option>1-1-1</option>
+                            <option>1-1-0</option>
+                            <option>1-0-1</option>
+                            <option>1-0-0</option>
+                            <option>0-1-0</option>
+                            <option>0-0-1</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicineswhen2" name="patient_medicineswhen2">
+                            <option>After Food</option>
+                            <option>Before Food</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinesdays2" name="patient_medicinesdays2">
+                            <option>Number of Days</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3 input-group mb-4">
+                          <input class="form-control autocomplete" id="patient_medicines3" type="text"
+                            name="patient_medicines3" placeholder="Medicine Name" list="medicineslist">
+                          <datalist id="medicineslist">
+                            {% for medicinesname in medicinesnames %}
+                            <option value="{{ medicinesname }}">{{ medicinesname }}</option>
+                            {% endfor %}
+                          </datalist>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinestime3" name="patient_medicinestime3">
+                            <option>1-1-1</option>
+                            <option>1-1-0</option>
+                            <option>1-0-1</option>
+                            <option>1-0-0</option>
+                            <option>0-1-0</option>
+                            <option>0-0-1</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicineswhen3" name="patient_medicineswhen3">
+                            <option>After Food</option>
+                            <option>Before Food</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinesdays3" name="patient_medicinesdays3">
+                            <option>Number of Days</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3 input-group mb-4">
+                          <input class="form-control autocomplete" id="patient_medicines4" type="text"
+                            name="patient_medicines4" placeholder="Medicine Name" list="medicineslist">
+                          <datalist id="medicineslist">
+                            {% for medicinesname in medicinesnames %}
+                            <option value="{{ medicinesname }}">{{ medicinesname }}</option>
+                            {% endfor %}
+                          </datalist>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinestime4" name="patient_medicinestime4">
+                            <option>1-1-1</option>
+                            <option>1-1-0</option>
+                            <option>1-0-1</option>
+                            <option>1-0-0</option>
+                            <option>0-1-0</option>
+                            <option>0-0-1</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicineswhen4" name="patient_medicineswhen4">
+                            <option>After Food</option>
+                            <option>Before Food</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 input-group mb-4">
+                          <select class="form-control" id="patient_medicinesdays4" name="patient_medicinesdays4">
+                            <option>Number of Days</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+                        </div>
+                      </div>
+                      
                       <div class="row">
                         <div class="col-md-6 input-group mb-4">
                           <input class="form-control autocomplete" id="patient_medicinesremark" type="text"
                             name="patient_medicinesremark" placeholder="Addnitional Notes">
+                        </div>
+                        <div class="col-md-2">
+                          <input class="form-control autocomplete" id="patient_amount" type="number"
+                            name="patient_amount" placeholder="Fees">
                         </div>
                       </div>
                     </div>
